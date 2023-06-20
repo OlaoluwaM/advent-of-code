@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       DayOne.Solution
+      DayTwo.Solution
   other-modules:
       Paths_haskell
   hs-source-dirs:
