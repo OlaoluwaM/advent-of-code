@@ -1,4 +1,4 @@
-module DayOne.Solution (calculateMaxCalories, chunkUpToEmptyString) where
+module DayOne.Solution (calculateMaxCalories) where
 
 -- Problem: https://adventofcode.com/2022/day/1
 
