@@ -35,7 +35,9 @@ ghc-options:
   - -Wmissing-home-modules
   - -Wpartial-fields
   - -Wredundant-constraints
-  - -XNoStarIsType
+
+extensions:
+  - NoStarIsType
 
 library:
   source-dirs: src
@@ -53,7 +55,7 @@ executables:
 
 tests:
   haskell-test:
-    main: Spec.hs
+    main: Driver.hs
     source-dirs: test
     ghc-options:
       - -threaded
@@ -61,3 +63,6 @@ tests:
       - -with-rtsopts=-N
     dependencies:
       - haskell
+      - tasty
+      - tasty-hunit
+      - tasty-discover
