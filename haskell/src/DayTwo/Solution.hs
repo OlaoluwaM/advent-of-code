@@ -63,7 +63,7 @@ parsePlayOptionIntoPoints Z = 3
 parsePlayOptionIntoPoints _ = 0
 
 fromRawToParsedRoundPlays :: RawRoundPlays -> RoundPlays
-fromRawToParsedRoundPlays rawSG = [(safeOpponentPlayOptionsParse [x], safePlayOptionsParse y) | (x : ' ' : y) <- lines rawSG]
+fromRawToParsedRoundPlays rawSG = [(safeOpponentPlayOptionsParse [x], safePlayOptionsParse [y]) | [x, _, y] <- lines rawSG]
 
 safeOpponentPlayOptionsParse :: String -> OpponentPlayOptions
 safeOpponentPlayOptionsParse = fromMaybe NopPlay . readMaybe
