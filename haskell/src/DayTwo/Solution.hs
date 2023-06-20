@@ -30,19 +30,21 @@ data Round = OpponentPlayOption `Vs` PlayOption
 
 data RoundResult = Loss | Draw | Win deriving (Show)
 
-headToHeadScore :: Round -> Integer
-headToHeadScore = \case
-  A `Vs` Y -> win
-  B `Vs` Z -> win
-  C `Vs` X -> win
-  A `Vs` X -> draw
-  B `Vs` Y -> draw
-  C `Vs` Z -> draw
-  _ -> lose
-  where
-    win = 6
-    draw = 3
-    lose = 0
+runRound :: Round -> RoundResult
+runRound = \case
+  A `Vs` Y -> Win
+  B `Vs` Z -> Win
+  C `Vs` X -> Win
+  A `Vs` X -> Draw
+  B `Vs` Y -> Draw
+  C `Vs` Z -> Draw
+  _ -> Loss
+
+resultScore :: RoundResult -> Integer
+resultScore = \case
+  Loss -> 0
+  Draw -> 3
+  Win -> 6
 
 playScore :: Round -> Integer
 playScore (_ `Vs` p) = case p of
@@ -51,7 +53,7 @@ playScore (_ `Vs` p) = case p of
   Z -> 3
 
 roundScore :: Round -> Integer
-roundScore r = headToHeadScore r + playScore r
+roundScore r = resultScore (runRound r) + playScore r
 
 parseRounds :: String -> Either String [Round]
 parseRounds = traverse (uncurry parseRoundNumber) . zip [1..] . lines
@@ -68,10 +70,10 @@ parseRound = \case
     <*> first ("Error parsing PlayOption: " ++) (readEither [y])
   invalid -> Left $ unwords ["Invalid round: \"", invalid, " \""]
 
-runRound :: String -> Either String Integer
-runRound = fmap (sum . fmap roundScore) . parseRounds
+runRPS :: String -> Either String Integer
+runRPS = fmap (sum . fmap roundScore) . parseRounds
 
 main :: [String] -> IO ()
 main = \case
-  [path] -> readFile path >>= pure . runRound >>= either error print
+  [path] -> readFile path >>= pure . runRPS >>= either error print
   _ -> error "Invalid args"
