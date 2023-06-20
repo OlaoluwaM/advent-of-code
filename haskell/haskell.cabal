@@ -6,12 +6,12 @@ cabal-version: 1.12
 
 name:           haskell
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/haskell#readme>
-homepage:       https://github.com/githubuser/haskell#readme
-bug-reports:    https://github.com/githubuser/haskell/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2023 Author name here
+description:    Please see the README on GitHub at <https://github.com/OlaoluwaM/Advent_of_Code#readme>
+homepage:       https://github.com/OlaoluwaM/Advent_of_Code#readme
+bug-reports:    https://github.com/OlaoluwaM/Advent_of_Code/issues
+author:         Olaoluwa Mustapha
+maintainer:     37044906+OlaoluwaM@users.noreply.github.com
+copyright:      2023 Olaoluwa Mustapha
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -21,18 +21,22 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/haskell
+  location: https://github.com/OlaoluwaM/Advent_of_Code
 
 library
   exposed-modules:
+      DayOne.Solution
       Lib
   other-modules:
       Paths_haskell
   hs-source-dirs:
       src
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -XNoStarIsType
   build-depends:
       base >=4.7 && <5
+    , containers
+    , split
+    , text
   default-language: Haskell2010
 
 executable haskell-exe
@@ -41,10 +45,13 @@ executable haskell-exe
       Paths_haskell
   hs-source-dirs:
       app
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -XNoStarIsType -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
     , haskell
+    , split
+    , text
   default-language: Haskell2010
 
 test-suite haskell-test
@@ -54,8 +61,11 @@ test-suite haskell-test
       Paths_haskell
   hs-source-dirs:
       test
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -XNoStarIsType -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
     , haskell
+    , split
+    , text
   default-language: Haskell2010
