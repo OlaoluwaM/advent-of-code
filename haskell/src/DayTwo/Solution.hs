@@ -1,7 +1,8 @@
+{-# LANGUAGE LambdaCase #-}
 module DayTwo.Solution where
 
-import Data.Maybe (fromMaybe)
-import Text.Read
+import Data.Bifunctor (first)
+import Text.Read (readEither)
 
 -- Problem: https://adventofcode.com/2022/day/2
 
@@ -21,56 +22,54 @@ import Text.Read
   Draw -> 3pt
 -}
 
-data OpponentPlayOptions = A | B | C | NopPlay deriving (Show, Eq, Read)
+data OpponentPlayOption = A | B | C deriving (Show, Eq, Read)
 
-data PlayOptions = X | Y | Z | Nplay deriving (Show, Eq, Read)
+data PlayOption = X | Y | Z deriving (Show, Eq, Read)
 
-type RoundPlay = (OpponentPlayOptions, PlayOptions)
+data Round = OpponentPlayOption `Vs` PlayOption
 
-type RoundPlays = [RoundPlay]
+data RoundResult = Loss | Draw | Win deriving (Show)
 
-type RawRoundPlays = String
-
-type RoundOutcome = (PlayOptions, Integer)
-
-calculateTotalPoints :: RawRoundPlays -> Integer
-calculateTotalPoints rawRoundPlays = sum [sumTuple $ getTotalRoundOutcomePts roundPlay playOption | roundPlay@(_, playOption) <- roundPlays]
-  where
-    sumTuple (x, y) = x + y
-    roundPlays = fromRawToParsedRoundPlays rawRoundPlays
-    getTotalRoundOutcomePts roundPlay playOption = (parsePlayOptionIntoPoints playOption, parseRoundPlayIntoOutcomePoints roundPlay)
-
--- CHange name
-parseRoundPlayIntoOutcomePoints :: RoundPlay -> Integer
-parseRoundPlayIntoOutcomePoints roundPlay = case roundPlay of
-  (A, Y) -> win
-  (B, Z) -> win
-  (C, X) -> win
-  (NopPlay, _) -> win
-  (A, X) -> draw
-  (B, Y) -> draw
-  (C, Z) -> draw
-  (_, _) -> lose
+headToHeadScore :: Round -> Integer
+headToHeadScore = \case
+  A `Vs` Y -> win
+  B `Vs` Z -> win
+  C `Vs` X -> win
+  A `Vs` X -> draw
+  B `Vs` Y -> draw
+  C `Vs` Z -> draw
+  _ -> lose
   where
     win = 6
     draw = 3
     lose = 0
 
-parsePlayOptionIntoPoints :: PlayOptions -> Integer
-parsePlayOptionIntoPoints X = 1
-parsePlayOptionIntoPoints Y = 2
-parsePlayOptionIntoPoints Z = 3
-parsePlayOptionIntoPoints _ = 0
+playScore :: Round -> Integer
+playScore (_ `Vs` p) = case p of
+  X -> 1
+  Y -> 2
+  Z -> 3
 
-fromRawToParsedRoundPlays :: RawRoundPlays -> RoundPlays
-fromRawToParsedRoundPlays rawSG = [(safeOpponentPlayOptionsParse [x], safePlayOptionsParse [y]) | [x, _, y] <- lines rawSG]
+roundScore :: Round -> Integer
+roundScore r = headToHeadScore r + playScore r
 
-safeOpponentPlayOptionsParse :: String -> OpponentPlayOptions
-safeOpponentPlayOptionsParse = fromMaybe NopPlay . readMaybe
+parseRounds :: String -> Either String [Round]
+parseRounds = traverse (uncurry parseRoundNumber) . zip [1..] . lines
 
-safePlayOptionsParse :: String -> PlayOptions
-safePlayOptionsParse = fromMaybe Nplay . readMaybe
+parseRoundNumber :: Int -> String -> Either String Round
+parseRoundNumber n =
+  first ((unwords ["Error in round", show n]) ++) . parseRound
 
--- main :: IO ()
+parseRound :: String -> Either String Round
+parseRound = \case
+  [x, ' ', y] ->
+    Vs
+    <$> first ("Error parsing OpponentPlayOption" ++) (readEither [x])
+    <*> first ("Error parsing PlayOption" ++) (readEither [y])
+  invalid -> Left $ unwords ["Invalid round: \"", invalid, " \""]
+
+runRound :: String -> Either String Integer
+runRound = fmap (sum . fmap roundScore) . parseRounds
+
 main :: IO ()
-main = readFile "./input.txt" >>= print . calculateTotalPoints
+main = readFile "./input.txt" >>= pure . runRound >>= either error print
