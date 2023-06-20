@@ -1,4 +1,5 @@
-module DayOne.Solution (calculateMaxCalories) where
+{-# LANGUAGE LambdaCase #-}
+module DayOne.Solution (calculateMaxCalories, main) where
 
 -- Problem: https://adventofcode.com/2022/day/1
 
@@ -32,7 +33,9 @@ safeIntegerRead = readMaybe
 calculateMaxCalories :: CaloriesInput -> Integer
 calculateMaxCalories = getMaxCalories . parseInput
 
--- main :: IO ()
--- main = do
---   inputFileContents <- readFile "input.txt"
---   print $ calculateMaxCalories inputFileContents
+main :: [String] -> IO ()
+main = \case
+  [path] -> do
+    inputFileContents <- readFile path
+    print $ calculateMaxCalories inputFileContents
+  _ -> error "Invalid args"

@@ -58,18 +58,20 @@ parseRounds = traverse (uncurry parseRoundNumber) . zip [1..] . lines
 
 parseRoundNumber :: Int -> String -> Either String Round
 parseRoundNumber n =
-  first ((unwords ["Error in round", show n]) ++) . parseRound
+  first ((unwords ["Error in round", show n, ": "]) ++) . parseRound
 
 parseRound :: String -> Either String Round
 parseRound = \case
   [x, ' ', y] ->
     Vs
-    <$> first ("Error parsing OpponentPlayOption" ++) (readEither [x])
-    <*> first ("Error parsing PlayOption" ++) (readEither [y])
+    <$> first ("Error parsing OpponentPlayOption: " ++) (readEither [x])
+    <*> first ("Error parsing PlayOption: " ++) (readEither [y])
   invalid -> Left $ unwords ["Invalid round: \"", invalid, " \""]
 
 runRound :: String -> Either String Integer
 runRound = fmap (sum . fmap roundScore) . parseRounds
 
-main :: IO ()
-main = readFile "./input.txt" >>= pure . runRound >>= either error print
+main :: [String] -> IO ()
+main = \case
+  [path] -> readFile path >>= pure . runRound >>= either error print
+  _ -> error "Invalid args"
