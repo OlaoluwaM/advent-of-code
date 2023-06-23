@@ -24,6 +24,14 @@ dependencies:
   - containers
   - text
   - split
+  - PyF
+  - directory
+
+default-extensions:
+  - ImportQualifiedPost
+  - NoStarIsType
+  - LambdaCase
+  - QuasiQuotes
 
 ghc-options:
   - -Wall
@@ -34,7 +42,6 @@ ghc-options:
   - -Wmissing-home-modules
   - -Wpartial-fields
   - -Wredundant-constraints
-  - -XNoStarIsType
 
 library:
   source-dirs: src

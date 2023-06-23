@@ -1,8 +1,9 @@
-module DayOne.Solution (calculateMaxCalories) where
+module DayOne.Solution (calculateMaxCalories, main, mainWithFile) where
 
 -- Problem: https://adventofcode.com/2022/day/1
 
 import Data.Maybe
+import PyF
 import Text.Read (readMaybe)
 
 type ParsedInput = [[Integer]]
@@ -29,10 +30,12 @@ chunkUpToEmptyString strings = chunkUpToEmptyString' strings [] []
 safeIntegerRead :: CaloriesInput -> Maybe Integer
 safeIntegerRead = readMaybe
 
+-- Exported for testing
 calculateMaxCalories :: CaloriesInput -> Integer
 calculateMaxCalories = getMaxCalories . parseInput
 
--- main :: IO ()
--- main = do
---   inputFileContents <- readFile "input.txt"
---   print $ calculateMaxCalories inputFileContents
+main :: String -> IO ()
+main s = let output = calculateMaxCalories s in putStrLn [fmt|Result: {output}|]
+
+mainWithFile :: String -> IO ()
+mainWithFile fileName = readFile fileName >>= main
