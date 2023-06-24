@@ -68,5 +68,8 @@ tests:
     dependencies:
       - haskell
       - tasty
-      - tasty-hunit
+      - tasty-hspec
       - tasty-discover
+      - tasty-hedgehog
+      - hedgehog
+      - hspec

@@ -75,7 +75,8 @@ test-suite haskell-test
   type: exitcode-stdio-1.0
   main-is: Driver.hs
   other-modules:
-      DayOneTest
+      Solutions.DayOneTest
+      Utils
       Paths_haskell
   hs-source-dirs:
       test
@@ -91,9 +92,12 @@ test-suite haskell-test
     , containers
     , directory
     , haskell
+    , hedgehog
+    , hspec
     , split
     , tasty
     , tasty-discover
-    , tasty-hunit
+    , tasty-hedgehog
+    , tasty-hspec
     , text
   default-language: Haskell2010
