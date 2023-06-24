@@ -29,6 +29,7 @@ library
       DayThree.Solution
       DayTwo.Solution
       DayTwo.SolutionAlt
+      Helpers
   other-modules:
       Paths_haskell
   hs-source-dirs:
