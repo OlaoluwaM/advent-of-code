@@ -1,6 +1,7 @@
 module Main where
 
 import DayOne.Solution qualified as Day1
+import DayThree.Solution qualified as Day3
 import DayTwo.SolutionAlt qualified as Day2
 import System.Directory (doesFileExist)
 import System.Environment (getArgs)
@@ -20,6 +21,7 @@ runDaySolution :: Int -> [String] -> IO ()
 runDaySolution day args = case day of
   1 -> executeWithFileOrStdin args (Day1.main, Day1.mainWithFile)
   2 -> executeWithFileOrStdin args (Day2.main, Day2.mainWithFile)
+  3 -> executeWithFileOrStdin args (Day3.main, Day3.mainWithFile)
   x -> error $ unwords ["Day not completed", show x]
 
 executeWithFileOrStdin :: [String] -> SolutionFns -> IO ()
