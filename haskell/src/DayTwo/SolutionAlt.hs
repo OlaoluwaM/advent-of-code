@@ -1,13 +1,20 @@
+----------------------------------------------------
+--                                                --
+--              Advent of Code 2022               --
+--           Day 2: Rock Paper Scissors           --
+--       https://adventofcode.com/2022/day/2      --
+--    Courtesy of: https://github.com/ramirez7    --
+--                                                --
+----------------------------------------------------
 module DayTwo.SolutionAlt (runRPS, main, mainWithFile) where
 
 import Data.Bifunctor (first)
 import PyF
 import Text.Read (readEither)
 
--- Courtesy of: https://github.com/ramirez7
--- Problem: https://adventofcode.com/2022/day/2
-
 {-
+  Domain Rules
+
   A -> Rock (1pt)
   B -> Paper (2pt)
   C -> Scissors (3pt)
@@ -15,8 +22,6 @@ import Text.Read (readEither)
   X -> Rock
   Y -> Paper
   Z -> Scissors
-
-  N -> No op in cases where parsing fail (0pt)
 
   Win -> 6pt
   Lose -> 0pt

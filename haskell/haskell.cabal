@@ -76,6 +76,8 @@ test-suite haskell-test
   main-is: Driver.hs
   other-modules:
       Solutions.DayOneTest
+      Solutions.DayThreeTest
+      Solutions.DayTwoTest
       Utils
       Paths_haskell
   hs-source-dirs:
@@ -97,6 +99,7 @@ test-suite haskell-test
     , split
     , tasty
     , tasty-discover
+    , tasty-expected-failure
     , tasty-hedgehog
     , tasty-hspec
     , text

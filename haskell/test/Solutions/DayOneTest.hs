@@ -1,7 +1,7 @@
 module Solutions.DayOneTest where
 
 import Data.List (intercalate)
-import DayOne.Solution
+import DayOne.Solution (calculateMaxCalories)
 import Hedgehog
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
@@ -15,7 +15,7 @@ import Utils
 -- ---------------------------------------------- --
 spec_solution :: Spec
 spec_solution = do
-  describe "Unit Tests" $ do
+  describe "AOC Day 1: Unit Tests" $ do
     describe "Tests on valid inputs" $ do
       correctInputUnitTest1
       correctInputUnitTest2
@@ -64,10 +64,10 @@ incorrectInputUnitTest3 = do
 -- ---------------------------------------------- --
 
 test_propertyTests :: TestTree
-test_propertyTests = testProperty "Property Based Tests" successPropTest
+test_propertyTests = testProperty "AOC Day 1: Property Based Tests" propertyTest
 
-successPropTest :: Property
-successPropTest =
+propertyTest :: Property
+propertyTest =
   property $ do
     listOfIntLists <- forAll $ Gen.list (Range.linear 1 100) $ Gen.list (Range.linear 1 100) $ Gen.int (Range.linear 0 10000)
     let input = joinWithEmptyLine $ map (intercalate "\n" . map show) listOfIntLists

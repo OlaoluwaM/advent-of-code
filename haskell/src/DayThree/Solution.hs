@@ -18,7 +18,7 @@ main inpStr = let output = either id show (part1Solution inpStr) in print [fmt|R
 mainWithFile :: String -> IO ()
 mainWithFile fileName = readFile fileName >>= main
 
--- Solutions
+-- Solution
 
 part1Solution :: String -> Either String Integer
 part1Solution = (sum <$>) . mapM (amassPrioritiesOfCommonElements . filterOutCommonElements . splitSackContentsIntoCompartments) . words
