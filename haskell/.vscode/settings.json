@@ -1,3 +1,5 @@
 {
-  "cSpell.words": ["foldl", "hspec", "Nplay", "uncurry"]
+  "cSpell.words": ["foldl", "hspec", "Nplay", "uncurry"],
+  "comment-divider.subheaderFiller": " ",
+  "comment-divider.length": 52
 }

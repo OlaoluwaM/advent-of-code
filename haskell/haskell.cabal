@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      DayFour.Solution
       DayOne.Solution
       DayThree.Solution
       DayTwo.Solution
@@ -75,6 +76,7 @@ test-suite haskell-test
   type: exitcode-stdio-1.0
   main-is: Driver.hs
   other-modules:
+      Solutions.DayFourTest
       Solutions.DayOneTest
       Solutions.DayThreeTest
       Solutions.DayTwoTest
