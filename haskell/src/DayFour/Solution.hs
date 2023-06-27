@@ -48,7 +48,7 @@ parseIdRange = (normalizeIdRange . toTuple2 (0 :: Word) <$>) . traverse readMayb
   normalizeIdRange (lB, uB)
     | lB > uB || uB < lB = (uB, lB)
     | uB == 0 = (lB, lB)
-    | lB == 0 = (uB, uB)
+    | lB == 0 = (1, uB)
     | otherwise = (lB, uB)
 
 doesRangePairContainCompleteOverlap :: Maybe IDRangePair -> Bool
