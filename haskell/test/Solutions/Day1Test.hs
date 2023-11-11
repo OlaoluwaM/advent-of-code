@@ -1,7 +1,7 @@
-module Solutions.DayOneTest where
+module Solutions.Day1Test where
 
 import Data.List (intercalate)
-import DayOne.Solution (calculateMaxCalories)
+import Day1.Solution (calculateMaxCalories)
 import Hedgehog
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
@@ -27,37 +27,37 @@ spec_solution = do
 correctInputUnitTest1 :: SpecWith ()
 correctInputUnitTest1 = do
   it "Should ensure that we can discern the caloric total of the Elf that has the most calories" $ calculateMaxCalories input `shouldBe` expected
-  where
-    input = joinWithEmptyLine ["400\n500\n300", "200\n300", "700"]
-    expected = 1200
+ where
+  input = joinWithEmptyLine ["400\n500\n300", "200\n300", "700"]
+  expected = 1200
 
 correctInputUnitTest2 :: SpecWith ()
 correctInputUnitTest2 = do
   it "Should ensure that we can discern the caloric total of the Elf that has the most calories 2" $ calculateMaxCalories input `shouldBe` expected
-  where
-    input = joinWithEmptyLine ["7000000", "800\n500\n10000", "20\n100\n665", "800"]
-    expected = 7000000
+ where
+  input = joinWithEmptyLine ["7000000", "800\n500\n10000", "20\n100\n665", "800"]
+  expected = 7000000
 
 incorrectInputUnitTest1 :: SpecWith ()
 incorrectInputUnitTest1 = do
   it "Should ensure that calculateMaxCalories function output 0 on empty input" $ calculateMaxCalories input `shouldBe` expected
-  where
-    input = ""
-    expected = 0
+ where
+  input = ""
+  expected = 0
 
 incorrectInputUnitTest2 :: SpecWith ()
 incorrectInputUnitTest2 = do
   it "Should ensure that calculateMaxCalories function output 0 if input contains only new lines" $ calculateMaxCalories input `shouldBe` expected
-  where
-    input = joinWithEmptyLine ["\n", "\n", "\n"]
-    expected = 0
+ where
+  input = joinWithEmptyLine ["\n", "\n", "\n"]
+  expected = 0
 
 incorrectInputUnitTest3 :: SpecWith ()
 incorrectInputUnitTest3 = do
   it "Should ensure that calculateMaxCalories function skips non-integers in calculation" $ calculateMaxCalories input `shouldBe` expected
-  where
-    input = joinWithEmptyLine ["aString\n4000\nfdf\n800", "200\n300\n400", "400\nyyr\n900"]
-    expected = 4800
+ where
+  input = joinWithEmptyLine ["aString\n4000\nfdf\n800", "200\n300\n400", "400\nyyr\n900"]
+  expected = 4800
 
 -- ---------------------------------------------- --
 --                 Property Tests                 --

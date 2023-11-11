@@ -6,7 +6,7 @@
 --    Courtesy of: https://github.com/ramirez7    --
 --                                                --
 ----------------------------------------------------
-module DayTwo.SolutionAlt (runRPS, main, mainWithFile) where
+module Day2.SolutionAlt (runRPS, main, mainWithFile) where
 
 import Data.Bifunctor (first)
 import PyF

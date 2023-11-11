@@ -1,6 +1,6 @@
-module Solutions.DayThreeTest where
+module Solutions.Day3Test where
 
-import DayThree.Solution (part1Solution)
+import Day3.Solution (part1Solution)
 import Hedgehog
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
@@ -13,9 +13,9 @@ test_propertyTests :: TestTree
 test_propertyTests =
   testGroup
     "AOC Day 3: Property Based Tests"
-    [ testProperty "With valid inputs, random even length strings" propertyTestWithValidInputs,
-      testProperty "With some invalid inputs, random length strings" propertyTestWithInvalidInputs2,
-      expectFail $ testProperty "With some invalid inputs, random alpha-numeric even length strings" propertyTestWithInvalidInputs1
+    [ testProperty "With valid inputs, random even length strings" propertyTestWithValidInputs
+    , testProperty "With some invalid inputs, random length strings" propertyTestWithInvalidInputs2
+    , expectFail $ testProperty "With some invalid inputs, random alpha-numeric even length strings" propertyTestWithInvalidInputs1
     ]
 
 propertyTestWithValidInputs :: Property

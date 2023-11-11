@@ -26,6 +26,9 @@ dependencies:
   - split
   - PyF
   - directory
+  - mtl
+  - lens
+  - semialign
 
 default-extensions:
   - ImportQualifiedPost

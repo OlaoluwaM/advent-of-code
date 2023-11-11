@@ -1,7 +1,7 @@
-module Solutions.DayFourTest where
+module Solutions.Day4Test where
 
 import Data.List (intercalate)
-import DayFour.Solution (solution)
+import Day4.Solution (solution)
 import Test.Hspec
 
 spec_solution :: Spec

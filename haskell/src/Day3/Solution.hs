@@ -5,7 +5,7 @@
 --       https://adventofcode.com/2022/day/3      --
 --                                                --
 ----------------------------------------------------
-module DayThree.Solution (part1Solution, main, mainWithFile) where
+module Day3.Solution (part1Solution, main, mainWithFile) where
 
 import Data.Map qualified as Map
 import Data.Set qualified as Set
@@ -22,11 +22,11 @@ mainWithFile fileName = readFile fileName >>= main
 
 part1Solution :: String -> Either String Integer
 part1Solution = (sum <$>) . mapM (amassPrioritiesOfCommonElements . filterOutCommonElements . splitSackContentsIntoCompartments) . words
-  where
-    amassPrioritiesOfCommonElements = Set.foldl sumPriorities (return 0)
-    sumPriorities acc v = let charPriority = getCharPriority v in (+) <$> charPriority <*> acc
-    filterOutCommonElements = uncurry Set.intersection . mapTuple Set.fromList
-    splitSackContentsIntoCompartments = splitInHalf
+ where
+  amassPrioritiesOfCommonElements = Set.foldl sumPriorities (return 0)
+  sumPriorities acc v = let charPriority = getCharPriority v in (+) <$> charPriority <*> acc
+  filterOutCommonElements = uncurry Set.intersection . mapTuple Set.fromList
+  splitSackContentsIntoCompartments = splitInHalf
 
 getCharPriority :: Char -> Either String Integer
 getCharPriority ch =

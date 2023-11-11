@@ -25,11 +25,12 @@ source-repository head
 
 library
   exposed-modules:
-      DayFour.Solution
-      DayOne.Solution
-      DayThree.Solution
-      DayTwo.Solution
-      DayTwo.SolutionAlt
+      Day1.Solution
+      Day2.Solution
+      Day2.SolutionAlt
+      Day3.Solution
+      Day4.Solution
+      Day5.Solution
       Helpers
   other-modules:
       Paths_haskell
@@ -46,6 +47,9 @@ library
     , base >=4.7 && <5
     , containers
     , directory
+    , lens
+    , mtl
+    , semialign
     , split
     , text
   default-language: Haskell2010
@@ -68,6 +72,9 @@ executable haskell-exe
     , containers
     , directory
     , haskell
+    , lens
+    , mtl
+    , semialign
     , split
     , text
   default-language: Haskell2010
@@ -76,10 +83,10 @@ test-suite haskell-test
   type: exitcode-stdio-1.0
   main-is: Driver.hs
   other-modules:
-      Solutions.DayFourTest
-      Solutions.DayOneTest
-      Solutions.DayThreeTest
-      Solutions.DayTwoTest
+      Solutions.Day1Test
+      Solutions.Day2Test
+      Solutions.Day3Test
+      Solutions.Day4Test
       Utils
       Paths_haskell
   hs-source-dirs:
@@ -98,6 +105,9 @@ test-suite haskell-test
     , haskell
     , hedgehog
     , hspec
+    , lens
+    , mtl
+    , semialign
     , split
     , tasty
     , tasty-discover

@@ -1,9 +1,9 @@
 module Main where
 
-import DayOne.Solution qualified as Day1
-import DayThree.Solution qualified as Day3
-import DayTwo.SolutionAlt qualified as Day2
-import DayFour.Solution qualified as Day4
+import Day1.Solution qualified as Day1
+import Day2.SolutionAlt qualified as Day2
+import Day3.Solution qualified as Day3
+import Day4.Solution qualified as Day4
 import System.Directory (doesFileExist)
 import System.Environment (getArgs)
 import System.IO.Error (catchIOError, ioeGetErrorString)

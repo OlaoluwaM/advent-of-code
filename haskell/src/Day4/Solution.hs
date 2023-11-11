@@ -3,7 +3,7 @@
 --               Day 4: Camp Cleanup              --
 --       https://adventofcode.com/2022/day/4      --
 -- ---------------------------------------------- --
-module DayFour.Solution (solution, main, mainWithFile) where
+module Day4.Solution (solution, main, mainWithFile) where
 
 import Data.List.Split (splitOn)
 import Helpers (mapTuple)
@@ -39,7 +39,7 @@ mainWithFile fileName = readFile fileName >>= main
 -- ---------------------------------------------- --
 
 solution :: String -> Int
-solution = length . filter doesRangePairContainCompleteOverlap . map (sequenceTupleMaybe . mapTuple parseIdRange . toTuple2 "0-0" . splitOn ",") . lines
+solution = length . filter doesRangePairContainCompleteOverlap . map (sequenceTuple . mapTuple parseIdRange . toTuple2 "0-0" . splitOn ",") . lines
 
 -- "90-95" -> Just (90, 95)
 parseIdRange :: String -> Maybe IDRange
@@ -67,5 +67,5 @@ toTuple2 def [x] = (x, def)
 toTuple2 _ [x, y] = (x, y)
 toTuple2 def _ = (def, def)
 
-sequenceTupleMaybe :: (Maybe a, Maybe a) -> Maybe (a, a)
-sequenceTupleMaybe = uncurry $ liftM2 (,)
+sequenceTuple :: (Monad m) => (m a, m a) -> m (a, a)
+sequenceTuple = uncurry $ liftM2 (,)

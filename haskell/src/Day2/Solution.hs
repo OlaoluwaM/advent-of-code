@@ -1,4 +1,4 @@
-module DayTwo.Solution where
+module Day2.Solution where
 
 import Data.Maybe (fromMaybe)
 import Text.Read
@@ -35,10 +35,10 @@ type RoundOutcome = (PlayOptions, Integer)
 
 calculateTotalPoints :: RawRoundPlays -> Integer
 calculateTotalPoints rawRoundPlays = sum [sumTuple $ getTotalRoundOutcomePts roundPlay playOption | roundPlay@(_, playOption) <- roundPlays]
-  where
-    sumTuple (x, y) = x + y
-    roundPlays = fromRawToParsedRoundPlays rawRoundPlays
-    getTotalRoundOutcomePts roundPlay playOption = (parsePlayOptionIntoPoints playOption, parseRoundPlayIntoOutcomePoints roundPlay)
+ where
+  sumTuple (x, y) = x + y
+  roundPlays = fromRawToParsedRoundPlays rawRoundPlays
+  getTotalRoundOutcomePts roundPlay playOption = (parsePlayOptionIntoPoints playOption, parseRoundPlayIntoOutcomePoints roundPlay)
 
 -- CHange name
 parseRoundPlayIntoOutcomePoints :: RoundPlay -> Integer
@@ -51,10 +51,10 @@ parseRoundPlayIntoOutcomePoints roundPlay = case roundPlay of
   (B, Y) -> draw
   (C, Z) -> draw
   (_, _) -> lose
-  where
-    win = 6
-    draw = 3
-    lose = 0
+ where
+  win = 6
+  draw = 3
+  lose = 0
 
 parsePlayOptionIntoPoints :: PlayOptions -> Integer
 parsePlayOptionIntoPoints X = 1
