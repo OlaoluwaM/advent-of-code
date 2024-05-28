@@ -6,7 +6,8 @@
 module Day5.Solution where
 
 import Control.Monad.State (State, execState, get, modify, put)
-import Data.List (foldl', isPrefixOf, transpose, intercalate)
+import Data.List (foldl', intercalate, isPrefixOf, transpose)
+
 import Data.List.Split (linesBy, splitOn, splitOneOf, splitWhen, startsWith)
 import Data.Maybe (fromMaybe, isJust, isNothing)
 import Text.Read (readMaybe)

@@ -1,27 +1,17 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.2.
+-- This file has been generated from package.yaml by hpack version 0.36.0.
 --
 -- see: https://github.com/sol/hpack
 
-name:           haskell
-version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/OlaoluwaM/Advent_of_Code#readme>
-homepage:       https://github.com/OlaoluwaM/Advent_of_Code#readme
-bug-reports:    https://github.com/OlaoluwaM/Advent_of_Code/issues
-author:         Olaoluwa Mustapha
-maintainer:     37044906+OlaoluwaM@users.noreply.github.com
-copyright:      2023 Olaoluwa Mustapha
+name:           aoc2022
+version:        0.0.0
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
     CHANGELOG.md
-
-source-repository head
-  type: git
-  location: https://github.com/OlaoluwaM/Advent_of_Code
 
 library
   exposed-modules:
@@ -32,8 +22,6 @@ library
       Day4.Solution
       Day5.Solution
       Helpers
-  other-modules:
-      Paths_haskell
   hs-source-dirs:
       src
   default-extensions:
@@ -41,23 +29,22 @@ library
       NoStarIsType
       LambdaCase
       QuasiQuotes
+      TypeApplications
+      OverloadedStrings
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       PyF
-    , base >=4.7 && <5
+    , base
     , containers
-    , directory
     , lens
     , mtl
     , semialign
     , split
     , text
-  default-language: Haskell2010
+  default-language: GHC2021
 
-executable haskell-exe
+executable aoc2022-exe
   main-is: Main.hs
-  other-modules:
-      Paths_haskell
   hs-source-dirs:
       app
   default-extensions:
@@ -65,21 +52,16 @@ executable haskell-exe
       NoStarIsType
       LambdaCase
       QuasiQuotes
+      TypeApplications
+      OverloadedStrings
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      PyF
-    , base >=4.7 && <5
-    , containers
+      aoc2022
+    , base
     , directory
-    , haskell
-    , lens
-    , mtl
-    , semialign
-    , split
-    , text
-  default-language: Haskell2010
+  default-language: GHC2021
 
-test-suite haskell-test
+test-suite aoc2022-test
   type: exitcode-stdio-1.0
   main-is: Driver.hs
   other-modules:
@@ -88,7 +70,6 @@ test-suite haskell-test
       Solutions.Day3Test
       Solutions.Day4Test
       Utils
-      Paths_haskell
   hs-source-dirs:
       test
   default-extensions:
@@ -96,23 +77,17 @@ test-suite haskell-test
       NoStarIsType
       LambdaCase
       QuasiQuotes
+      TypeApplications
+      OverloadedStrings
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      PyF
-    , base >=4.7 && <5
-    , containers
-    , directory
-    , haskell
+      aoc2022
+    , base
     , hedgehog
     , hspec
-    , lens
-    , mtl
-    , semialign
-    , split
     , tasty
     , tasty-discover
     , tasty-expected-failure
     , tasty-hedgehog
     , tasty-hspec
-    , text
-  default-language: Haskell2010
+  default-language: GHC2021

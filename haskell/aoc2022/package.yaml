@@ -1,10 +1,5 @@
-name: haskell
-version: 0.1.0.0
-github: "OlaoluwaM/Advent_of_Code"
-license: BSD3
-author: "Olaoluwa Mustapha"
-maintainer: "37044906+OlaoluwaM@users.noreply.github.com"
-copyright: "2023 Olaoluwa Mustapha"
+name: aoc2022
+spec-version: 0.36.0
 
 extra-source-files:
   - README.md
@@ -17,24 +12,19 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description: Please see the README on GitHub at <https://github.com/OlaoluwaM/Advent_of_Code#readme>
+# description: Please see the README on GitHub at <https://github.com/OlaoluwaM/advent-of-code#readme>
 
+language: GHC2021
 dependencies:
-  - base >= 4.7 && < 5
-  - containers
-  - text
-  - split
-  - PyF
-  - directory
-  - mtl
-  - lens
-  - semialign
+  - base
 
 default-extensions:
   - ImportQualifiedPost
   - NoStarIsType
   - LambdaCase
   - QuasiQuotes
+  - TypeApplications
+  - OverloadedStrings
 
 ghc-options:
   - -Wall
@@ -48,9 +38,17 @@ ghc-options:
 
 library:
   source-dirs: src
+  dependencies:
+    - containers
+    - text
+    - split
+    - PyF
+    - mtl
+    - lens
+    - semialign
 
 executables:
-  haskell-exe:
+  aoc2022-exe:
     main: Main.hs
     source-dirs: app
     ghc-options:
@@ -58,10 +56,11 @@ executables:
       - -rtsopts
       - -with-rtsopts=-N
     dependencies:
-      - haskell
+      - aoc2022
+      - directory
 
 tests:
-  haskell-test:
+  aoc2022-test:
     main: Driver.hs
     source-dirs: test
     ghc-options:
@@ -69,7 +68,7 @@ tests:
       - -rtsopts
       - -with-rtsopts=-N
     dependencies:
-      - haskell
+      - aoc2022
       - tasty
       - tasty-hspec
       - tasty-discover

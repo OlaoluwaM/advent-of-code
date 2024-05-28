@@ -1,0 +1,10 @@
+cradle:
+  stack:
+    - path: "aoc2022/src"
+      component: "aoc2022:lib"
+
+    - path: "aoc2022/app/Main.hs"
+      component: "aoc2022:exe:aoc2022-exe"
+
+    - path: "aoc2022/test"
+      component: "aoc2022:test:aoc2022-test"
