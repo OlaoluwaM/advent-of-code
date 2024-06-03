@@ -1,41 +1,41 @@
-module Day1.Solution (calculateMaxCalories, main, mainWithFile) where
+module Day1.Solution (
+    main,
+    mainWithFile,
+    -- Exported for testing
+    calcMaxCaloriesOverall,
+    calcTopThreeCaloriesAsSum,
+) where
 
 -- Problem: https://adventofcode.com/2022/day/1
 
+import Data.List.Split (splitWhen)
 import Data.Maybe
 import PyF
-import Text.Read (readMaybe)
 
-type ParsedInput = [[Integer]]
+import Data.List qualified as List
+import Data.Ord (Down (Down))
+import Helpers (toSafeInteger)
 
 type CaloriesInput = String
+type ParsedInput = [Integer]
 
-getMaxCalories :: ParsedInput -> Integer
-getMaxCalories = maximum . map sum
+parseInput :: String -> ParsedInput
+parseInput = List.sortOn Down . map (sum . map toSafeInteger) . splitWhen (== "") . lines
 
-parseInput :: CaloriesInput -> ParsedInput
-parseInput = map toSafeInteger . chunkUpToEmptyString . lines
- where
-  toSafeInteger = map (fromMaybe 0 . safeIntegerRead)
+calcMaxCaloriesOverall :: CaloriesInput -> Integer
+calcMaxCaloriesOverall = fromMaybe 0 . listToMaybe . parseInput
 
--- Attribution: https://github.com/Ma-Fi-94/advent-of-haskell-22/blob/main/day1/solution.hs
-chunkUpToEmptyString :: [String] -> [[String]]
-chunkUpToEmptyString strings = chunkUpToEmptyString' strings [] []
- where
-  chunkUpToEmptyString' [] groupsList currentGroup = groupsList ++ [currentGroup]
-  chunkUpToEmptyString' [""] groupsList currentGroup = groupsList ++ [currentGroup]
-  chunkUpToEmptyString' ("" : xs) groupsList currentGroup = chunkUpToEmptyString' xs (groupsList ++ [currentGroup]) []
-  chunkUpToEmptyString' (x : xs) groupsList currentGroup = chunkUpToEmptyString' xs groupsList (currentGroup ++ [x])
-
-safeIntegerRead :: CaloriesInput -> Maybe Integer
-safeIntegerRead = readMaybe
-
--- Exported for testing
-calculateMaxCalories :: CaloriesInput -> Integer
-calculateMaxCalories = getMaxCalories . parseInput
+calcTopThreeCaloriesAsSum :: CaloriesInput -> Integer
+calcTopThreeCaloriesAsSum = sum . take 3 . parseInput
 
 main :: String -> IO ()
-main s = let output = calculateMaxCalories s in putStrLn [fmt|Result: {output}|]
+main s = putStrLn $ formatAns (calcMaxCaloriesOverall s, calcTopThreeCaloriesAsSum s)
+  where
+    formatAns (generalMaxCalories, topThreeMaxCalorieSum) =
+        [fmt|\
+{generalMaxCalories}
+{topThreeMaxCalorieSum}\
+        |]
 
 mainWithFile :: String -> IO ()
 mainWithFile fileName = readFile fileName >>= main

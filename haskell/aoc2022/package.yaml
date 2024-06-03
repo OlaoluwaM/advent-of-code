@@ -46,6 +46,7 @@ library:
     - mtl
     - lens
     - semialign
+    - vector
 
 executables:
   aoc2022-exe:
@@ -58,6 +59,7 @@ executables:
     dependencies:
       - aoc2022
       - directory
+      - vector
 
 tests:
   aoc2022-test:

@@ -41,6 +41,7 @@ library
     , semialign
     , split
     , text
+    , vector
   default-language: GHC2021
 
 executable aoc2022-exe
@@ -59,6 +60,7 @@ executable aoc2022-exe
       aoc2022
     , base
     , directory
+    , vector
   default-language: GHC2021
 
 test-suite aoc2022-test
