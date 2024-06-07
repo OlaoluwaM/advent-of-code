@@ -25,6 +25,8 @@ default-extensions:
   - QuasiQuotes
   - TypeApplications
   - OverloadedStrings
+  # - NoFieldSelectors
+  - OverloadedRecordDot
 
 ghc-options:
   - -Wall
@@ -47,6 +49,7 @@ library:
     - lens
     - semialign
     - vector
+    - errors
 
 executables:
   aoc2022-exe:
@@ -60,6 +63,7 @@ executables:
       - aoc2022
       - directory
       - vector
+      - text
 
 tests:
   aoc2022-test:
@@ -74,7 +78,11 @@ tests:
       - tasty
       - tasty-hspec
       - tasty-discover
-      - tasty-hedgehog
-      - hedgehog
+      - tasty-hedgehog # Work to remove this dependency
+      - hedgehog # Work to remove this dependency
+      - QuickCheck
+      - tasty-quickcheck
       - hspec
+      - text
+      - PyF
       - tasty-expected-failure

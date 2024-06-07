@@ -1,6 +1,7 @@
 module Day1.Solution (
     main,
     mainWithFile,
+    defaultInputFile,
     -- Exported for testing
     calcMaxCaloriesOverall,
     calcTopThreeCaloriesAsSum,
@@ -16,11 +17,15 @@ import Data.List qualified as List
 import Data.Ord (Down (Down))
 import Helpers (toSafeInteger)
 
-type CaloriesInput = String
+import Data.Text (Text)
+import Data.Text qualified as T
+import Data.Text.IO qualified as T
+
+type CaloriesInput = Text
 type ParsedInput = [Integer]
 
-parseInput :: String -> ParsedInput
-parseInput = List.sortOn Down . map (sum . map toSafeInteger) . splitWhen (== "") . lines
+parseInput :: Text -> ParsedInput
+parseInput = List.sortOn Down . map (sum . map toSafeInteger) . splitWhen (== "") . T.lines
 
 calcMaxCaloriesOverall :: CaloriesInput -> Integer
 calcMaxCaloriesOverall = fromMaybe 0 . listToMaybe . parseInput
@@ -28,8 +33,8 @@ calcMaxCaloriesOverall = fromMaybe 0 . listToMaybe . parseInput
 calcTopThreeCaloriesAsSum :: CaloriesInput -> Integer
 calcTopThreeCaloriesAsSum = sum . take 3 . parseInput
 
-main :: String -> IO ()
-main s = putStrLn $ formatAns (calcMaxCaloriesOverall s, calcTopThreeCaloriesAsSum s)
+main :: Text -> IO ()
+main txt = putStrLn $ formatAns (calcMaxCaloriesOverall txt, calcTopThreeCaloriesAsSum txt)
   where
     formatAns (generalMaxCalories, topThreeMaxCalorieSum) =
         [fmt|\
@@ -38,4 +43,7 @@ main s = putStrLn $ formatAns (calcMaxCaloriesOverall s, calcTopThreeCaloriesAsS
         |]
 
 mainWithFile :: String -> IO ()
-mainWithFile fileName = readFile fileName >>= main
+mainWithFile fileName = T.readFile fileName >>= main
+
+defaultInputFile :: String
+defaultInputFile = "./src/Day1/input.txt"

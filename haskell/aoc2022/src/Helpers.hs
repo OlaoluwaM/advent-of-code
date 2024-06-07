@@ -1,17 +1,22 @@
 module Helpers where
 
+import Data.Text (Text)
+
+import Data.Text qualified as T
+
 import Data.Maybe
 import Text.Read
 
-splitInHalf :: String -> (String, String)
-splitInHalf strToSplit = splitAt (div (length strToSplit + 1) 2) strToSplit
+import Data.Bifunctor (Bifunctor (bimap))
 
-maybeToEither :: a -> Maybe b -> Either a b
-maybeToEither _ (Just b) = Right b
-maybeToEither a Nothing = Left a
+splitInHalf :: Text -> (Text, Text)
+splitInHalf s = T.splitAt (div (T.length s + 1) 2) s
 
 mapTuple :: (a -> b) -> (a, a) -> (b, b)
-mapTuple f (x, y) = (f x, f y)
+mapTuple f = bimap f f
 
-toSafeInteger :: String -> Integer
-toSafeInteger = fromMaybe 0 . (readMaybe @Integer)
+toSafeInteger :: Text -> Integer
+toSafeInteger = fromMaybe 0 . readMaybe . T.unpack
+
+tshow :: (Show a) => a -> T.Text
+tshow = T.pack . show

@@ -31,11 +31,13 @@ library
       QuasiQuotes
       TypeApplications
       OverloadedStrings
+      OverloadedRecordDot
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       PyF
     , base
     , containers
+    , errors
     , lens
     , mtl
     , semialign
@@ -55,11 +57,13 @@ executable aoc2022-exe
       QuasiQuotes
       TypeApplications
       OverloadedStrings
+      OverloadedRecordDot
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aoc2022
     , base
     , directory
+    , text
     , vector
   default-language: GHC2021
 
@@ -67,10 +71,10 @@ test-suite aoc2022-test
   type: exitcode-stdio-1.0
   main-is: Driver.hs
   other-modules:
-      Solutions.Day1Test
-      Solutions.Day2Test
-      Solutions.Day3Test
-      Solutions.Day4Test
+      Solutions.Day1
+      Solutions.Day2
+      Solutions.Day3
+      Solutions.Day4
       Utils
   hs-source-dirs:
       test
@@ -81,9 +85,12 @@ test-suite aoc2022-test
       QuasiQuotes
       TypeApplications
       OverloadedStrings
+      OverloadedRecordDot
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aoc2022
+      PyF
+    , QuickCheck
+    , aoc2022
     , base
     , hedgehog
     , hspec
@@ -92,4 +99,6 @@ test-suite aoc2022-test
     , tasty-expected-failure
     , tasty-hedgehog
     , tasty-hspec
+    , tasty-quickcheck
+    , text
   default-language: GHC2021

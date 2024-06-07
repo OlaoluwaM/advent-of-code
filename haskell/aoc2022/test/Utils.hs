@@ -1,9 +1,29 @@
 module Utils where
 
+import Test.QuickCheck
+
+import Data.Char
 import Data.List (intercalate)
 
-joinWithEmptyLine :: [String] -> String
-joinWithEmptyLine = intercalate "\n\n"
+import Data.Text (Text)
 
-joinWithNewLine :: [String] -> String
-joinWithNewLine = intercalate "\n"
+import Data.Text qualified as T
+
+joinWithEmptyLine :: [Text] -> Text
+joinWithEmptyLine = T.intercalate "\n\n"
+
+joinWithNewLine :: [Text] -> Text
+joinWithNewLine = T.intercalate "\n"
+
+newtype AlphaChar = AlphaChar {unAlphaChar :: Char} deriving (Eq, Show)
+
+genAlphaChar :: Gen AlphaChar
+genAlphaChar = do
+    let upperCaseAlphaRange = (ord 'A', ord 'Z')
+    let lowerCaseAlphaRange = (ord 'a', ord 'z')
+    charCode <- oneof [chooseInt upperCaseAlphaRange, chooseInt lowerCaseAlphaRange]
+
+    pure $ AlphaChar $ chr charCode
+
+instance Arbitrary AlphaChar where
+    arbitrary = genAlphaChar
