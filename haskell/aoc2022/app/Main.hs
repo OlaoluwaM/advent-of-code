@@ -8,6 +8,7 @@ import Data.Text.IO qualified as T
 
 import Data.Vector qualified as V
 import Day1.Solution qualified as Day1
+import Day2.Solution qualified as Day2
 import System.Directory (doesFileExist)
 import System.Environment (getArgs)
 import System.IO.Error (catchIOError, ioeGetErrorString)
@@ -16,7 +17,7 @@ import Text.Read (readMaybe)
 type SolutionFns = (Text -> IO (), String -> IO ())
 
 defaultInputFilePaths :: Vector String
-defaultInputFilePaths = V.fromList [Day1.defaultInputFile]
+defaultInputFilePaths = V.fromList [Day1.defaultInputFile, Day2.defaultInputFile]
 
 main :: IO ()
 main =
@@ -28,6 +29,7 @@ main =
 runDaySolution :: Int -> [Text] -> IO ()
 runDaySolution day args = case day of
     1 -> executeWithFileOrStdin day args (Day1.main, Day1.mainWithFile)
+    2 -> executeWithFileOrStdin day args (Day2.main, Day2.mainWithFile)
     _ -> error $ "There is no solution for day " <> show day <> " yet"
 
 executeWithFileOrStdin :: Int -> [Text] -> SolutionFns -> IO ()

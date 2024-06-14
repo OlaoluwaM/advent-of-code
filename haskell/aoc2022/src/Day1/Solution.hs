@@ -1,3 +1,5 @@
+-- Problem: https://adventofcode.com/2022/day/1
+
 module Day1.Solution (
     main,
     mainWithFile,
@@ -6,8 +8,6 @@ module Day1.Solution (
     calcMaxCaloriesOverall,
     calcTopThreeCaloriesAsSum,
 ) where
-
--- Problem: https://adventofcode.com/2022/day/1
 
 import Data.List.Split (splitWhen)
 import Data.Maybe
