@@ -1,3 +1,3 @@
-# Advent of Code (2022)
+# Advent of Code
 
-<https://adventofcode.com/2022>
+A repo containing my solutions to [advent of code](https://adventofcode.com/) challenges in any/all languages of my choosing. Earliest AOC challenges are from 2022

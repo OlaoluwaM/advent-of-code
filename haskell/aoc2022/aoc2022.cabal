@@ -31,7 +31,9 @@ library
       QuasiQuotes
       TypeApplications
       OverloadedStrings
+      NoFieldSelectors
       OverloadedRecordDot
+      DuplicateRecordFields
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       PyF
@@ -57,7 +59,9 @@ executable aoc2022-exe
       QuasiQuotes
       TypeApplications
       OverloadedStrings
+      NoFieldSelectors
       OverloadedRecordDot
+      DuplicateRecordFields
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aoc2022
@@ -85,7 +89,9 @@ test-suite aoc2022-test
       QuasiQuotes
       TypeApplications
       OverloadedStrings
+      NoFieldSelectors
       OverloadedRecordDot
+      DuplicateRecordFields
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       PyF

@@ -1,38 +1,85 @@
--- ----------------------------------------------------
--- --                                                --
--- --              Advent of Code 2022               --
--- --         Day 3: Rucksack Reorganization         --
--- --       https://adventofcode.com/2022/day/3      --
--- --                                                --
--- ----------------------------------------------------
--- module Day3.Solution (part1Solution, main, mainWithFile) where
-module Day3.Solution where
+-- Problem: https://adventofcode.com/2022/day/3
+module Day3.Solution (main, mainWithFile, defaultInputFile) where
 
--- import Data.Map qualified as Map
--- import Data.Set qualified as Set
--- import Helpers
--- import PyF
+import Data.Set (Set)
+import Data.Set qualified as Set
 
--- import Control.Error (note)
+import Helpers (both, splitInHalfS)
 
--- main :: String -> IO ()
--- main inpStr = let output = either id show (part1Solution inpStr) in print [fmt|Result: {output}|]
+import Data.Char
+import Data.List.NonEmpty (NonEmpty)
+import Data.List.NonEmpty qualified as NE
+import Data.List.Split (chunksOf)
+import Data.Maybe (mapMaybe)
 
--- mainWithFile :: String -> IO ()
--- mainWithFile fileName = readFile fileName >>= main
+import Control.Arrow ((&&&))
+import PyF
 
--- -- Solution
+-- Use the `lines` function to convert inp to list of strings
+-- filter out elems whose length is not divisible by 2
+-- Divide each rucksack into a tuple (a, b) where `a` reprsents the first compartment while b the other. We can make both sets and find the intersection
+-- For all shared elems, get the priority
+-- Sum up the priority
 
--- part1Solution :: String -> Either String Integer
--- part1Solution = (sum <$>) . mapM (amassPrioritiesOfCommonElements . filterOutCommonElements . splitSackContentsIntoCompartments) . words
---  where
---   amassPrioritiesOfCommonElements = Set.foldl sumPriorities (return 0)
---   sumPriorities acc v = let charPriority = getCharPriority v in (+) <$> charPriority <*> acc
---   filterOutCommonElements = uncurry Set.intersection . mapTuple Set.fromList
---   splitSackContentsIntoCompartments = splitInHalf
+-- Each rucksack has exactly two compartments of the same size so the raw input must be of even length
+-- Add a little explanation as to why we're using Char and String instead of Text
+type Rucksack = (Set Char, Set Char)
+type ElfGroup = NonEmpty (Set Char)
 
--- getCharPriority :: Char -> Either String Integer
--- getCharPriority ch =
---   let priorityMap = Map.fromList $ zip ['a' .. 'z'] [1 .. 26] ++ zip ['A' .. 'Z'] [27 .. 52]
---       errorMsg = [fmt|Error, could not discern priority value for char: {ch}|]
---    in note errorMsg (Map.lookup ch priorityMap)
+elfGroupSize :: Int
+elfGroupSize = 3
+
+parseRuckSacks :: String -> [Rucksack]
+parseRuckSacks = map (both Set.fromList . splitInHalfS) . filter (even . length) . lines
+
+parseElfGroups :: String -> [ElfGroup]
+parseElfGroups = mapMaybe toElfGroup . chunksOf elfGroupSize . lines
+  where
+    toElfGroup :: [String] -> Maybe ElfGroup
+    toElfGroup rs
+        | length rs == elfGroupSize = NE.fromList . fmap Set.fromList <$> Just rs
+        | otherwise = Nothing
+
+getItemReorgPriorityForRucksacks :: [Rucksack] -> Int
+getItemReorgPriorityForRucksacks = foldr ((+) . sum . getItemReorgPriorityForRucksack) 0
+  where
+    getItemReorgPriorityForRucksack :: Rucksack -> Set Int
+    getItemReorgPriorityForRucksack = Set.map getItemReorgPriority . uncurry Set.intersection
+
+getElfGroupBadgesReorgPriority :: [ElfGroup] -> Int
+getElfGroupBadgesReorgPriority = foldr ((+) . sum . getElfGroupBadge) 0
+  where
+    getElfGroupBadge :: ElfGroup -> Set Int
+    getElfGroupBadge = Set.map getItemReorgPriority . foldr1 Set.intersection
+
+getItemReorgPriority :: Char -> Int
+getItemReorgPriority char
+    -- ord 'a' - 1 == 96
+    -- ord 'a' - 96 == 1
+    -- ord 'b' - 96 == 2
+    -- ord 'c' - 96 == 3
+    -- ...
+    -- ord 'z' - 96 == 26
+    | isLower char = let offset = ord 'a' - 1 in ord char - offset
+    -- ord 'A' - 38 == 27
+    -- ord 'B' - 38 == 28
+    -- ord 'C' - 38 == 29
+    -- ...
+    -- ord 'Z' - 38 == 52
+    | isUpper char = let offset = 38 in ord char - offset
+    | otherwise = 0
+
+main :: String -> IO ()
+main = putStrLn . formatAns . ((getElfGroupBadgesReorgPriority . parseElfGroups) &&& (getItemReorgPriorityForRucksacks . parseRuckSacks))
+  where
+    formatAns (ans1, ans2) =
+        [fmt|\
+{ans1}
+{ans2}\
+        |]
+
+mainWithFile :: String -> IO ()
+mainWithFile fileName = readFile fileName >>= main
+
+defaultInputFile :: String
+defaultInputFile = "./src/Day3/input.txt"

@@ -25,8 +25,9 @@ default-extensions:
   - QuasiQuotes
   - TypeApplications
   - OverloadedStrings
-  # - NoFieldSelectors
+  - NoFieldSelectors
   - OverloadedRecordDot
+  - DuplicateRecordFields
 
 ghc-options:
   - -Wall

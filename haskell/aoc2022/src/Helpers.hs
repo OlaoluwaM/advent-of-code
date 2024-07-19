@@ -13,6 +13,9 @@ import Data.Bifunctor (Bifunctor (bimap))
 splitInHalf :: Text -> (Text, Text)
 splitInHalf s = T.splitAt (div (T.length s + 1) 2) s
 
+splitInHalfS :: String -> (String, String)
+splitInHalfS s = splitAt (div (length s + 1) 2) s
+
 both :: (a -> b) -> (a, a) -> (b, b)
 both f = bimap f f
 
@@ -24,3 +27,6 @@ tshow = T.pack . show
 
 fanThrough :: (Arrow a) => (a b c, a b c') -> a b (c, c')
 fanThrough = uncurry (&&&)
+
+headF :: (Foldable f) => f a -> Maybe a
+headF = foldr (\x _ -> pure x) Nothing
