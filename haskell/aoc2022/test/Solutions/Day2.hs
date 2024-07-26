@@ -1,6 +1,7 @@
 module Solutions.Day2 where
 
-import Day2.Solution (runRPSPart1, runRPSPart2)
+import Data.Text.IO qualified as T
+import Day2.Solution (defaultInputFile, runRPSPart1, runRPSPart2)
 import Helpers (fanThrough)
 import Test.Hspec
 
@@ -25,6 +26,7 @@ spec_solution = do
     describe "AOC Day 2: Unit Tests" $ do
         test1
         test2
+        testWithOfficialInputFile
 
 test1 :: Spec
 test1 =
@@ -41,3 +43,9 @@ test2 = do
   where
     input = ""
     expected = (0, 0)
+
+testWithOfficialInputFile :: Spec
+testWithOfficialInputFile = do
+    input <- runIO (T.readFile defaultInputFile)
+    let expectedAns = (13726, 12855)
+    it "Ensures that functions output the right answer for the officially provided input file" $ (runRPSPart2, runRPSPart1) `fanThrough` input `shouldBe` expectedAns

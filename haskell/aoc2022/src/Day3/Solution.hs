@@ -1,5 +1,12 @@
 -- Problem: https://adventofcode.com/2022/day/3
-module Day3.Solution (main, mainWithFile, defaultInputFile) where
+module Day3.Solution (
+    main,
+    mainWithFile,
+    defaultInputFile,
+    -- For Testing Purposes
+    getSolutionRucksacks,
+    getSolutionElfGroups,
+) where
 
 import Data.Set (Set)
 import Data.Set qualified as Set
@@ -29,16 +36,25 @@ type ElfGroup = NonEmpty (Set Char)
 elfGroupSize :: Int
 elfGroupSize = 3
 
+isValidInputStr :: String -> Bool
+isValidInputStr strng = isValidString strng && (even . length) strng
+  where
+    isValidString :: String -> Bool
+    isValidString = foldr (\char -> (&& isLetter char)) True
+
 parseRuckSacks :: String -> [Rucksack]
-parseRuckSacks = map (both Set.fromList . splitInHalfS) . filter (even . length) . lines
+parseRuckSacks = map (both Set.fromList . splitInHalfS) . filter isValidInputStr . lines
 
 parseElfGroups :: String -> [ElfGroup]
-parseElfGroups = mapMaybe toElfGroup . chunksOf elfGroupSize . lines
+parseElfGroups = mapMaybe toElfGroup . filter isValidElfGroup . chunksOf elfGroupSize . lines
   where
     toElfGroup :: [String] -> Maybe ElfGroup
     toElfGroup rs
         | length rs == elfGroupSize = NE.fromList . fmap Set.fromList <$> Just rs
         | otherwise = Nothing
+
+    isValidElfGroup :: [String] -> Bool
+    isValidElfGroup = (== elfGroupSize) . length . filter isValidInputStr
 
 getItemReorgPriorityForRucksacks :: [Rucksack] -> Int
 getItemReorgPriorityForRucksacks = foldr ((+) . sum . getItemReorgPriorityForRucksack) 0
@@ -68,6 +84,12 @@ getItemReorgPriority char
     -- ord 'Z' - 38 == 52
     | isUpper char = let offset = 38 in ord char - offset
     | otherwise = 0
+
+getSolutionRucksacks :: String -> Int
+getSolutionRucksacks = getItemReorgPriorityForRucksacks . parseRuckSacks
+
+getSolutionElfGroups :: String -> Int
+getSolutionElfGroups = getElfGroupBadgesReorgPriority . parseElfGroups
 
 main :: String -> IO ()
 main = putStrLn . formatAns . ((getElfGroupBadgesReorgPriority . parseElfGroups) &&& (getItemReorgPriorityForRucksacks . parseRuckSacks))

@@ -3,10 +3,14 @@ module Solutions.Day1 where
 import Day1.Solution (
     calcMaxCaloriesOverall,
     calcTopThreeCaloriesAsSum,
+    defaultInputFile,
  )
+
+import Data.Text.IO qualified as T
 
 import Test.Hspec
 
+import Helpers (fanThrough)
 import Utils
 
 spec_solution :: Spec
@@ -17,6 +21,7 @@ spec_solution = do
             correctInputUnitTest2
             correctInputUnitTest3
             correctInputUnitTest4
+            testWithOfficialInputFile
         describe "Tests on invalid calories inputs" $ do
             invalidInputUnitTest1
             invalidInputUnitTest2
@@ -94,3 +99,9 @@ invalidInputUnitTest6 =
   where
     input = joinWithEmptyLine ["aString\n4000\nfdf\n800", "200\n300\n400", "400\nyyr\n900", "9000\nerf\n1000", "5000\nerfr", "efr\n800"]
     expected = 4800 + 10_000 + 5000
+
+testWithOfficialInputFile :: Spec
+testWithOfficialInputFile = do
+    input <- runIO (T.readFile defaultInputFile)
+    let expectedAns = (211447, 71934)
+    it "Ensures that functions output the right answer for the officially provided input file" $ (calcTopThreeCaloriesAsSum, calcMaxCaloriesOverall) `fanThrough` input `shouldBe` expectedAns

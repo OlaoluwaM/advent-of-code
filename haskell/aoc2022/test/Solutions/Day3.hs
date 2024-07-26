@@ -1,42 +1,46 @@
 module Solutions.Day3 where
 
--- import Day3.Solution (part1Solution)
--- import Hedgehog
--- import Hedgehog.Gen qualified as Gen
--- import Hedgehog.Range qualified as Range
--- import Test.Tasty
--- import Test.Tasty.ExpectedFailure (expectFail)
--- import Test.Tasty.Hedgehog
--- import Utils (joinWithNewLine)
+import Day3.Solution (defaultInputFile, getSolutionElfGroups, getSolutionRucksacks)
+import Helpers (fanThrough)
+import Test.Hspec
 
--- test_propertyTests :: TestTree
--- test_propertyTests =
---   testGroup
---     "AOC Day 3: Property Based Tests"
---     [ testProperty "With valid inputs, random even length strings" propertyTestWithValidInputs
---     , testProperty "With some invalid inputs, random length strings" propertyTestWithInvalidInputs2
---     , expectFail $ testProperty "With some invalid inputs, random alpha-numeric even length strings" propertyTestWithInvalidInputs1
---     ]
+spec_solution :: Spec
+spec_solution = do
+    describe "AOC Day 3: Unit Tests" $ do
+        test1
+        test2
+        test3
+        testWithOfficialInputFile
 
--- propertyTestWithValidInputs :: Property
--- propertyTestWithValidInputs =
---   property $ do
---     len <- forAll $ Gen.integral $ Range.linear 1 100
---     listOfEvenLenStr <- forAll $ Gen.list (Range.linear 1 100) $ Gen.string (Range.singleton $ 2 * len) Gen.alpha
---     let input = joinWithNewLine listOfEvenLenStr
---     evalEither $ part1Solution input >> Right ()
+test1 :: Spec
+test1 =
+    do
+        it "Should ensure that we can calculate the re-organization priority for each rucksack and elf group even with no arrangement configuration"
+        $ (getSolutionRucksacks, getSolutionElfGroups) `fanThrough` input `shouldBe` expected
+  where
+    input = ""
+    expected = (0, 0)
 
--- propertyTestWithInvalidInputs1 :: Property
--- propertyTestWithInvalidInputs1 =
---   property $ do
---     len <- forAll $ Gen.integral $ Range.linear 1 100
---     listOfStr <- forAll $ Gen.list (Range.linear 1 100) $ Gen.string (Range.singleton $ 2 * len) Gen.alphaNum
---     let input = joinWithNewLine listOfStr
---     evalEither $ part1Solution input >> Right ()
+test2 :: Spec
+test2 =
+    do
+        it "Should ensure that we can calculate the re-organization priority for each rucksack and skip invalid rucksacks"
+        $ getSolutionRucksacks input `shouldBe` expected
+  where
+    input = "vJrwpWtwJgWrhcsFMMfFFhFp\noriw3243v\noriw3243\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nkjmlpc"
+    expected = 54
 
--- propertyTestWithInvalidInputs2 :: Property
--- propertyTestWithInvalidInputs2 =
---   property $ do
---     listOfStr <- forAll $ Gen.list (Range.linear 1 100) $ Gen.string (Range.linear 1 100) Gen.alpha
---     let input = joinWithNewLine listOfStr
---     evalEither $ part1Solution input >> Right ()
+test3 :: Spec
+test3 =
+    do
+        it "Should ensure that we can calculate the re-organization priority for each elf group and skip invalid elf group configurations"
+        $ getSolutionElfGroups input `shouldBe` expected
+  where
+    input = "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\na344454lai\nllk\nBSBDzrSwrqccDDwbfcBjsRwggClslTRWGWGMFlsF\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw\naaZbbk\nllvkki\nmmioor"
+    expected = 70
+
+testWithOfficialInputFile :: Spec
+testWithOfficialInputFile = do
+    inp <- runIO (readFile defaultInputFile)
+    let expectedAns = (2587, 8240)
+    it "Ensures that functions output the right answer for the officially provided input file" $ (getSolutionElfGroups, getSolutionRucksacks) `fanThrough` inp `shouldBe` expectedAns

@@ -9,6 +9,7 @@ import Text.Read
 
 import Control.Arrow (Arrow, (&&&))
 import Data.Bifunctor (Bifunctor (bimap))
+import Debug.Trace (trace)
 
 splitInHalf :: Text -> (Text, Text)
 splitInHalf s = T.splitAt (div (T.length s + 1) 2) s
@@ -30,3 +31,6 @@ fanThrough = uncurry (&&&)
 
 headF :: (Foldable f) => f a -> Maybe a
 headF = foldr (\x _ -> pure x) Nothing
+
+myTrace :: (Show a) => String -> a -> a
+myTrace str' a = trace (str' <> show a) a
