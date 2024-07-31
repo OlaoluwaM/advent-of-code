@@ -1,72 +1,78 @@
--- -- ---------------------------------------------- --
--- --                 Advent of Code                 --
--- --               Day 4: Camp Cleanup              --
--- --       https://adventofcode.com/2022/day/4      --
--- -- ---------------------------------------------- --
--- module Day4.Solution (solution, main, mainWithFile) where
-module Day4.Solution where
+module Day4.Solution (
+    main,
+    mainWithFile,
+    defaultInputFile,
+    -- Exported for testing only
+    computeSolutionOne,
+    computeSolutionTwo,
+) where
 
--- import Data.List.Split (splitOn)
--- import Helpers (mapTuple)
--- import Text.Read (readMaybe)
+-- https://adventofcode.com/2022/day/4
 
--- import GHC.Base (liftM2)
--- import PyF
+import Data.Set (Set)
+import Data.Text (Text)
 
--- {-
---   Solution
+import Data.Set qualified as Set
+import Data.Text qualified as T
+import Data.Text.IO qualified as TIO
 
---   A range of IDs A is a complete subset of another range of IDs B if:
---     the upper bound of B is greater than or equal to the upper bound of A
---     the lower bound of B is less than or equal to the lower bound of A
+import Text.Megaparsec
+import Text.Megaparsec.Char
 
---   A: 3 - 6
---   B: 2 - 7
+import Control.Monad (guard, void)
+import Data.Bool (bool)
+import Data.Maybe (mapMaybe)
+import Data.Void
+import Helpers (fanThrough)
+import PyF (fmt)
 
---   The upper bound of B, 7, is greater than the upper bound of A (6), and the lower bound of B is less than that of A. Thus, the range A is within B
--- -}
+type Parser = Parsec Void Text
 
--- type IDRange = (Word, Word)
--- type IDRangePair = (IDRange, IDRange)
+type AssignmentRange = Set Int
+type AssignmentRangePair = (AssignmentRange, AssignmentRange)
+type AssignmentRangePairs = [AssignmentRangePair]
 
--- main :: String -> IO ()
--- main inpStr = let output = solution inpStr in print [fmt|Result. There are {output} complete overlaps|]
+parseInput :: Text -> AssignmentRangePairs
+parseInput = mapMaybe (parseMaybe assignmentRangePairParser) . T.lines
 
--- mainWithFile :: String -> IO ()
--- mainWithFile fileName = readFile fileName >>= main
+assignmentRangePairParser :: Parser AssignmentRangePair
+assignmentRangePairParser = (\a _ c _ -> (a, c)) <$> assignmentRangeParser <*> void (char ',') <*> assignmentRangeParser <*> eof
+  where
+    assignmentRangeParser :: Parser AssignmentRange
+    assignmentRangeParser = do
+        lowerBoundStr <- some digitChar
+        void $ char '-'
+        upperBoundStr <- some digitChar
 
--- -- ---------------------------------------------- --
--- --                    Solution                    --
--- -- ---------------------------------------------- --
+        let lowerBound = read @Int lowerBoundStr
+        let upperBound = read @Int upperBoundStr
 
--- solution :: String -> Int
--- solution = length . filter doesRangePairContainCompleteOverlap . map (sequenceTuple . mapTuple parseIdRange . toTuple2 "0-0" . splitOn ",") . lines
+        guard (upperBound >= lowerBound)
+        pure $ toSet (lowerBound, upperBound)
 
--- -- "90-95" -> Just (90, 95)
--- parseIdRange :: String -> Maybe IDRange
--- parseIdRange = (normalizeIdRange . toTuple2 (0 :: Word) <$>) . traverse readMaybe . splitOn "-"
---  where
---   normalizeIdRange (lB, uB)
---     | lB > uB || uB < lB = (uB, lB)
---     | uB == 0 = (lB, lB)
---     | lB == 0 = (1, uB)
---     | otherwise = (lB, uB)
+    toSet :: (Int, Int) -> Set Int
+    toSet (lowerBound, upperBound) = Set.fromList [lowerBound .. upperBound]
 
--- doesRangePairContainCompleteOverlap :: Maybe IDRangePair -> Bool
--- doesRangePairContainCompleteOverlap = \case
---   Just ((idRange1LowerB, idRange1UpperB), (idRange2LowerB, idRange2UpperB)) -> firstRangeIsWithinSecond || secondRangeIsWithinFirst
---    where
---     firstRangeIsWithinSecond = idRange2UpperB >= idRange1UpperB && idRange2LowerB <= idRange1LowerB
---     secondRangeIsWithinFirst = idRange1UpperB >= idRange2UpperB && idRange1LowerB <= idRange2LowerB
---   _ -> False
+countValidAssignmentRangePairs :: (AssignmentRangePair -> Bool) -> AssignmentRangePairs -> Int
+countValidAssignmentRangePairs predFn = foldr (bool id (+ 1) . predFn) 0
 
--- -- ---------------------------------------------- --
--- --                     Helpers                    --
--- -- ---------------------------------------------- --
--- toTuple2 :: a -> [a] -> (a, a)
--- toTuple2 def [x] = (x, def)
--- toTuple2 _ [x, y] = (x, y)
--- toTuple2 def _ = (def, def)
+computeSolutionOne :: Text -> Int
+computeSolutionOne = countValidAssignmentRangePairs isCompletelyOverlappingAssignmentRangePair . parseInput
+  where
+    isCompletelyOverlappingAssignmentRangePair (fstPair, sndPair) = fstPair `Set.isSubsetOf` sndPair || sndPair `Set.isSubsetOf` fstPair
 
--- sequenceTuple :: (Monad m) => (m a, m a) -> m (a, a)
--- sequenceTuple = uncurry $ liftM2 (,)
+computeSolutionTwo :: Text -> Int
+computeSolutionTwo = countValidAssignmentRangePairs isPartiallyOverlappingAssignmentRangePair . parseInput
+  where
+    isPartiallyOverlappingAssignmentRangePair = not . uncurry Set.disjoint
+
+main :: Text -> IO ()
+main = putStrLn . formatAns . ((computeSolutionOne, computeSolutionTwo) `fanThrough`)
+  where
+    formatAns (solutionOne, solutionTwo) = [fmt|Solution one ans: {solutionOne}. Solution Two ans: {solutionTwo}|]
+
+mainWithFile :: String -> IO ()
+mainWithFile fileName = TIO.readFile fileName >>= main
+
+defaultInputFile :: String
+defaultInputFile = "./src/Day4/input.txt"

@@ -1,66 +1,40 @@
 module Solutions.Day4 where
 
--- import Data.List (intercalate)
--- import Day4.Solution (solution)
--- import Test.Hspec
+import Day4.Solution (computeSolutionOne, computeSolutionTwo, defaultInputFile)
+import Helpers (fanThrough)
+import Test.Hspec
 
--- spec_solution :: Spec
--- spec_solution = do
---     describe "AOC Day 4: Unit Tests" $ do
---         describe "Tests on valid inputs" $ do
---             correctInputUnitTest1
---             correctInputUnitTest2
---             correctInputUnitTest3
---         describe "Tests on invalid inputs" $ do
---             incorrectInputUnitTest1
---             incorrectInputUnitTest2
---             incorrectInputUnitTest3
+import Data.Text.IO qualified as TIO
 
--- correctInputUnitTest1 :: SpecWith ()
--- correctInputUnitTest1 = do
---     it "Should ensure that we can calculate the total number of range pairs with complete overlap" $ solution input `shouldBe` expected
---   where
---     input = mkInput [["90-100", "90-95"], ["1-10", "10-20"], ["30-50", "31-70"], ["20-30", "40-50"], ["40-80", "50-100"]]
---     expected = 1
+spec_solution :: Spec
+spec_solution = do
+    describe "AOC Day 4: Unit Tests" $ do
+        test1
+        test2
+        test3
+        testWithOfficialInputFile
 
--- correctInputUnitTest2 :: SpecWith ()
--- correctInputUnitTest2 = do
---     it "Should ensure that we can calculate the total number of range pairs with complete overlap regardless of some faulty inputs" $ solution input `shouldBe` expected
---   where
---     input = mkInput [["9-90"], [], ["1-10", "5-5"], ["9-9", "10-10"], ["3-3"]]
---     expected = 1
+test1 :: Spec
+test1 =
+    it "Should ensure that function for solution one works even if input contains invalid assignment pairings" $
+        let inp = "2-4,6-8\n2-3,4-5\n5-7,7-9\n2-8,3-7\n6-6,4-6\n2-6,4-8\nfrefefer\n888-0,93-10,34958\n1-10,5-8\n15-18,11-20\n1-10,9-12,12-20"
+            expectedAns = 4
+         in computeSolutionOne inp `shouldBe` expectedAns
 
--- correctInputUnitTest3 :: SpecWith ()
--- correctInputUnitTest3 = do
---     it "Should ensure that we can calculate the total number of range pairs if all range pairs overlap" $ solution input `shouldBe` expected
---   where
---     rawInput = [["9-90", "14-50"], ["1-20", "4-10"], ["1-10", "5-5"], ["9-19", "10-10"], ["3-50", "8-22"], ["2-2000000", "40-55"]]
---     input = mkInput rawInput
---     expected = length rawInput
+test2 :: Spec
+test2 =
+    it "Should ensure that function for solution two works even if input contains invalid assignment pairings" $
+        let inp = "2-4,6-8\n2-3,4-5\n5-7,7-9\n2-8,3-7\n6-6,4-6\n2-6,4-8\nfrefefer\n888-0,93-10\n1-6,5-8\n1-10,5-8\n1-10,9-12,12-20"
+            expectedAns = 6
+         in computeSolutionTwo inp `shouldBe` expectedAns
 
--- incorrectInputUnitTest1 :: SpecWith ()
--- incorrectInputUnitTest1 = do
---     it "Should ensure that we can handle a case where no range pairs are supplied" $ solution input `shouldBe` expected
---   where
---     input = mkInput []
---     expected = 0
+test3 :: Spec
+test3 =
+    it "Should ensure that solution functions return 0 if input is empty" $
+        let input = "" in (computeSolutionOne, computeSolutionTwo) `fanThrough` input `shouldBe` (0, 0)
 
--- incorrectInputUnitTest2 :: SpecWith ()
--- incorrectInputUnitTest2 = do
---     it "Should ensure that we can handle a case where invalid ranges have been supplied" $ solution input `shouldBe` expected
---   where
---     input = mkInput [["a-b", "a"], ["c-d", "d"], ["9-99", "40-44"], ["2", "2"], ["22"]]
---     expected = 3
-
--- incorrectInputUnitTest3 :: SpecWith ()
--- incorrectInputUnitTest3 = do
---     it "Should ensure that we can handle a case where invalid ranges (negatives) have been supplied" $ solution input `shouldBe` expected
---   where
---     input = mkInput [["-1-10", "-5-10"], ["-1-20", "2-10"], ["-5"], ["-4-8", "10-20"]]
---     expected = 0
-
--- -- ---------------------------------------------- --
--- --                     Helpers                    --
--- -- ---------------------------------------------- --
--- mkInput :: [[String]] -> String
--- mkInput = intercalate "\n" . map (intercalate ",")
+testWithOfficialInputFile :: Spec
+testWithOfficialInputFile = do
+    inp <- runIO (TIO.readFile defaultInputFile)
+    let expectedAns = (456, 808)
+    it "Ensures that functions output the right answer for the officially provided input file" $ (computeSolutionOne, computeSolutionTwo) `fanThrough` inp `shouldBe` expectedAns

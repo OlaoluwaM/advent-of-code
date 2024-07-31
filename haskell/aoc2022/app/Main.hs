@@ -10,6 +10,7 @@ import Data.Vector qualified as V
 import Day1.Solution qualified as Day1
 import Day2.Solution qualified as Day2
 import Day3.Solution qualified as Day3
+import Day4.Solution qualified as Day4
 
 import System.Directory (doesFileExist)
 import System.Environment (getArgs)
@@ -19,7 +20,7 @@ import Text.Read (readMaybe)
 type SolutionFns = (Text -> IO (), String -> IO ())
 
 defaultInputFilePaths :: Vector String
-defaultInputFilePaths = V.fromList [Day1.defaultInputFile, Day2.defaultInputFile, Day3.defaultInputFile]
+defaultInputFilePaths = V.fromList [Day1.defaultInputFile, Day2.defaultInputFile, Day3.defaultInputFile, Day4.defaultInputFile]
 
 main :: IO ()
 main =
@@ -33,6 +34,7 @@ runDaySolution day args = case day of
     1 -> executeWithFileOrStdin day args (Day1.main, Day1.mainWithFile)
     2 -> executeWithFileOrStdin day args (Day2.main, Day2.mainWithFile)
     3 -> executeWithFileOrStdin day args (Day3.main . T.unpack, Day3.mainWithFile)
+    4 -> executeWithFileOrStdin day args (Day4.main, Day4.mainWithFile)
     _ -> error $ "There is no solution for day " <> show day <> " yet"
 
 executeWithFileOrStdin :: Int -> [Text] -> SolutionFns -> IO ()

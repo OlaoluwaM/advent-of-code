@@ -46,11 +46,12 @@ library:
     - text
     - split
     - PyF
-    - mtl
     - lens
     - semialign
     - vector
     - errors
+    - megaparsec
+    - these
 
 executables:
   aoc2022-exe:

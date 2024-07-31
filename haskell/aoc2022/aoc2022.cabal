@@ -41,10 +41,11 @@ library
     , containers
     , errors
     , lens
-    , mtl
+    , megaparsec
     , semialign
     , split
     , text
+    , these
     , vector
   default-language: GHC2021
 
