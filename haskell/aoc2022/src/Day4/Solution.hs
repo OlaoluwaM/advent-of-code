@@ -18,8 +18,9 @@ import Data.Text.IO qualified as TIO
 
 import Text.Megaparsec
 import Text.Megaparsec.Char
+import Text.Megaparsec.Char.Lexer qualified as ML
 
-import Control.Monad (guard, void)
+import Control.Monad (guard)
 import Data.Bool (bool)
 import Data.Maybe (mapMaybe)
 import Data.Void
@@ -36,17 +37,12 @@ parseInput :: Text -> AssignmentRangePairs
 parseInput = mapMaybe (parseMaybe assignmentRangePairParser) . T.lines
 
 assignmentRangePairParser :: Parser AssignmentRangePair
-assignmentRangePairParser = (\a _ c _ -> (a, c)) <$> assignmentRangeParser <*> void (char ',') <*> assignmentRangeParser <*> eof
+assignmentRangePairParser = (,) <$> assignmentRangeParser <*> (char ',' *> assignmentRangeParser) <* eof
   where
     assignmentRangeParser :: Parser AssignmentRange
     assignmentRangeParser = do
-        lowerBoundStr <- some digitChar
-        void $ char '-'
-        upperBoundStr <- some digitChar
-
-        let lowerBound = read @Int lowerBoundStr
-        let upperBound = read @Int upperBoundStr
-
+        lowerBound <- ML.decimal
+        upperBound <- char '-' *> ML.decimal
         guard (upperBound >= lowerBound)
         pure $ toSet (lowerBound, upperBound)
 
@@ -69,7 +65,7 @@ computeSolutionTwo = countValidAssignmentRangePairs isPartiallyOverlappingAssign
 main :: Text -> IO ()
 main = putStrLn . formatAns . ((computeSolutionOne, computeSolutionTwo) `fanThrough`)
   where
-    formatAns (solutionOne, solutionTwo) = [fmt|Solution one ans: {solutionOne}. Solution Two ans: {solutionTwo}|]
+    formatAns (solutionOne, solutionTwo) = [fmt|Solution one: {solutionOne}. Solution Two: {solutionTwo}|]
 
 mainWithFile :: String -> IO ()
 mainWithFile fileName = TIO.readFile fileName >>= main
